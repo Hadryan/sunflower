@@ -5,7 +5,8 @@ description = ""
 authors = ["Julien Beisel"]
 
 [tool.poetry.dependencies]
-python = "*"
+python = "^3.7"
+black = "^19.10b0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.4"
