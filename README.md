@@ -1,5 +1,5 @@
 # sunflower
 
-![Nujabes flower](assets/nujabes_flower.jpg){:height="50%" width="50%"}
+<img src="assets/nujabes_flower.jpg" width="200">
 
 Image source : Nujabes
