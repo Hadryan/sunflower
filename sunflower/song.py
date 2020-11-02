@@ -63,7 +63,7 @@ class Song:
 
         # Detect tempo
         self.tempo, self.beat_frames = librosa.beat.beat_track(
-            y=self.mono_waveform, sr=self.sr
+            y=self.mono_waveform, sr=self.sr,tightness=100
         )
 
     def export_wav(self):
