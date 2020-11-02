@@ -11,6 +11,7 @@ class Song:
         """
 
         self.waveform = None
+        self.mono_waveform = None
         self.sr = None
         self.bytes = filelike
 
@@ -37,12 +38,15 @@ class Song:
         waveform = np.array(a.get_array_of_samples())
 
         if a.channels == 2:
-            waveform = waveform.reshape((-1, 2)).astype('float32')
+            waveform = waveform.reshape((-1, 2)).astype("float32")
 
         a.export("data/new.mp3", format="mp3")
 
         self.waveform = waveform
-        self.sr = a.frame_rate*2
+        self.mono_waveform = np.array(a.set_channels(1).get_array_of_samples()).astype(
+            "float32"
+        )
+        self.sr = a.frame_rate
 
     def process_song(self):
         """Removes silence at the beginning of the song.
@@ -59,7 +63,14 @@ class Song:
 
         # Detect tempo
         self.tempo, self.beat_frames = librosa.beat.beat_track(
-            y=self.waveform, sr=self.sr
+            y=self.mono_waveform, sr=self.sr
+        )
+
+    def export_wav(self):
+        sf.write(
+            "data/processedfile.wav",
+            self.waveform.astype(np.float32, order="C") / 32768.0,
+            self.sr,
         )
 
 
@@ -67,4 +78,3 @@ data_song = io.BytesIO(open("data/examplesong.wav", "rb").read())
 beat = Song(data_song)
 print(round(beat.tempo, 0))
 
-sf.write("data/processedfile.wav", beat.waveform, beat.sr)
